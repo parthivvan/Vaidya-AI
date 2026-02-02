@@ -1,3 +1,5 @@
+![Work in Progress](https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif)
+
 Here is a professional and comprehensive **`README.md`** file tailored exactly to the current state of your project. It includes specific steps for **Mac** and **Windows** to ensure anyone (including you in the future) can get it running immediately.
 
 ### **Action:**
