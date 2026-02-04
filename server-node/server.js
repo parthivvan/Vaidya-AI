@@ -2,6 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const medicineRoutes = require("./routes/medicine.route");
+const orderRoutes = require("./routes/order.route");
 
 dotenv.config();
 
@@ -56,5 +58,7 @@ const doctorRoutes = require("./routes/doctor.route");
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointments", require("./routes/appointment.route"));
 app.use("/api/labs", require("./routes/lab.route"));
+app.use("/api/medicines", medicineRoutes);
+app.use("/api/orders", orderRoutes);
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AuthCard from '../components/AuthCard';
 import PricingSection from '../components/PricingSection';
@@ -37,7 +37,7 @@ const LandingPage = () => {
               </span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Product</a>
+              <Link to="/health-hive" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Health Hive</Link>
               <a href="#" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Solutions</a>
               <a href="#pricing" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Pricing</a>
             </div>

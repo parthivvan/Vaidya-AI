@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Calendar, Video, FileText, Settings, 
   Plus, Clock, Loader2, LogOut, History as HistoryIcon,
   Search, Bell, Menu, Download, Heart, Activity, Scale,
-  CalendarDays, Stethoscope, ChevronDown, Star, AlertTriangle, X
+  CalendarDays, Stethoscope, ChevronDown, Star, AlertTriangle, X, Pill
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -166,6 +166,10 @@ const Dashboard = () => {
           <a href="#booking" className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-[#5747e6] transition-colors">
             <Calendar className="w-5 h-5" />
             <span className="font-medium">Book Appointment</span>
+          </a>
+          <a href="/health-hive" className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-[#5747e6] transition-colors">
+            <Pill className="w-5 h-5" />
+            <span className="font-medium">Health Hive</span>
           </a>
           <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-[#5747e6] transition-colors">
             <HistoryIcon className="w-5 h-5" />

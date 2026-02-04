@@ -7,9 +7,13 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import DoctorDashboard from './pages/DoctorDashboard'; // 👈 CRITICAL IMPORT
+import Pharmacy from './pages/Pharmacy';
+import CartPage from './pages/CartPage';
+import HealthHiveLanding from './pages/HealthHiveLanding';
 
 // Context & Protection
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -27,11 +31,13 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <AuthProvider>
-      <Toaster position="top-right" />
-      <Routes>
+      <CartProvider>
+        <Toaster position="top-right" />
+        <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/health-hive" element={<HealthHiveLanding />} />
 
         {/* Patient Dashboard */}
         <Route path="/dashboard" element={
@@ -47,9 +53,16 @@ function App() {
           </ProtectedRoute>
         } />
 
+        {/* Pharmacy */}
+        <Route path="/pharmacy" element={<ProtectedRoute><Pharmacy /></ProtectedRoute>} />
+
+        {/* Cart */}
+        <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+
         {/* Catch-all: If page doesn't exist, go home */}
         <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+        </Routes>
+      </CartProvider>
     </AuthProvider>
   );
 }
