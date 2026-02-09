@@ -16,8 +16,15 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["patient", "doctor", "admin", "lab_admin"], 
+    enum: ["patient", "doctor", "superadmin"],
     default: "patient",
+  },
+  phone: {
+    type: String,
+  },
+  location: {
+    type: String,
+    default: "Unknown",
   },
   // 👇 NEW: Subscription Logic
   subscription: {

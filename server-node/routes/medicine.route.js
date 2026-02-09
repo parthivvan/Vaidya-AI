@@ -1,22 +1,55 @@
 const express = require("express");
 const router = express.Router();
-const { getMedicines, getMedicineById, seedMedicine } = require("../controllers/medicine.controller");
-const upload = require('../config/cloudinary'); // Import the config
+const Medicine = require("../models/medicine.model");
+const upload = require("../config/cloudinary"); // 👈 Import the config we made earlier
 
-// GET /api/medicines
-router.get("/", getMedicines);
+// POST /api/medicines/add
+// upload.single('image') middleware captures the file from the frontend
+router.post("/add", upload.single("image"), async (req, res) => {
+  try {
+    const { name, category, price, stock, description } = req.body;
 
-// GET /api/medicines/:id
-router.get("/:id", getMedicineById);
+    // If file uploaded, use Cloudinary URL. Else use placeholder.
+    const imageUrl = req.file ? req.file.path : "https://placehold.co/400"; 
 
-// POST /api/medicines/upload
-router.post('/upload', upload.single('image'), (req, res) => {
-  // Cloudinary automatically handles the upload before we get here
-  // req.file.path contains the new URL
-  res.json({ url: req.file.path });
+    const newMedicine = new Medicine({
+      name,
+      category,
+      price,
+      stock,
+      description,
+      imageUrl, 
+    });
+
+    await newMedicine.save();
+    res.status(201).json({ message: "Product Added!", product: newMedicine });
+  } catch (err) {
+    console.error("Error adding product:", err);
+    res.status(500).json({ message: "Error saving product" });
+  }
 });
 
-// POST /api/medicines/seed (Only for testing/admin)
-router.post("/seed", seedMedicine);
+// 2. GET ALL
+router.get("/", async (req, res) => {
+  try {
+    const medicines = await Medicine.find();
+    res.json(medicines);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching medicines", error: err.message });
+  }
+});
+
+// 3. GET BY ID
+router.get("/:id", async (req, res) => {
+  try {
+    const medicine = await Medicine.findById(req.params.id);
+    if (!medicine) {
+      return res.status(404).json({ message: "Medicine not found" });
+    }
+    res.json(medicine);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching medicine", error: err.message });
+  }
+});
 
 module.exports = router;

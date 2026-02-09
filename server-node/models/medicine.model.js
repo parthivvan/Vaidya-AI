@@ -21,7 +21,19 @@ const medicineSchema = new mongoose.Schema({
   category: { 
     type: String, 
     required: true,
-    enum: ['Pain Relief', 'Cold & Flu', 'Vitamins', 'First Aid', 'Skincare', 'Prescription'] 
+    enum: [
+      "Pain Relief",
+      "Vitamins",
+      "Supplements",
+      "Antibiotics",
+      "Heart Health",
+      "Cold & Flu",
+      "Devices",
+      "Diabetes",
+      "Hygiene",
+      "First Aid",
+      "Skincare"
+    ]
   },
   stock: { 
     type: Number, 

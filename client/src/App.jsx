@@ -10,6 +10,10 @@ import DoctorDashboard from './pages/DoctorDashboard'; // 👈 CRITICAL IMPORT
 import Pharmacy from './pages/Pharmacy';
 import CartPage from './pages/CartPage';
 import HealthHiveLanding from './pages/HealthHiveLanding';
+import AdminUpload from './pages/AdminUpload';
+import SuperAdminDashboard from './pages/SuperAdminDashboard';
+import ProductDetails from './pages/ProductDetails';
+import LabTests from './pages/LabTests';
 
 // Context & Protection
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -56,8 +60,20 @@ function App() {
         {/* Pharmacy */}
         <Route path="/pharmacy" element={<ProtectedRoute><Pharmacy /></ProtectedRoute>} />
 
+        {/* Product Details */}
+        <Route path="/product/:id" element={<ProtectedRoute><ProductDetails /></ProtectedRoute>} />
+
+        {/* Lab Tests */}
+        <Route path="/lab-tests" element={<LabTests />} />
+
         {/* Cart */}
         <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+
+        {/* Admin Upload */}
+        <Route path="/admin/add" element={<AdminUpload />} />
+
+        {/* Super Admin Dashboard */}
+        <Route path="/super-admin" element={<SuperAdminDashboard />} />
 
         {/* Catch-all: If page doesn't exist, go home */}
         <Route path="*" element={<Navigate to="/" />} />

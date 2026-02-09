@@ -256,7 +256,7 @@ const Dashboard = () => {
                                 <div className="flex items-center gap-2 text-slate-500 text-sm font-medium mb-1">
                                     <Clock className="w-4 h-4" /> {appt.timeSlot} • Video Consultation
                                 </div>
-                                <h4 className="text-lg font-bold text-slate-900 font-display">Dr. {appt.doctorId?.userId?.fullName}</h4>
+                                <h4 className="text-lg font-bold text-slate-900 font-display">{appt.doctorId?.name}</h4>
                                 <p className="text-slate-500">{appt.doctorId?.specialization}</p>
                             </div>
                             <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -307,7 +307,7 @@ const Dashboard = () => {
                       <div className="p-6 border-b border-slate-100 flex gap-4">
                          <div className="size-16 rounded-xl bg-slate-100 flex items-center justify-center text-2xl font-bold text-[#5747e6]">{doc.userId?.fullName?.charAt(0)}</div>
                          <div>
-                            <h4 className="text-lg font-bold text-slate-900 font-display">Dr. {doc.userId?.fullName}</h4>
+                            <h4 className="text-lg font-bold text-slate-900 font-display">{doc.name}</h4>
                             <p className="text-[#5747e6] text-sm font-medium">{doc.specialization}</p>
                             <div className="flex items-center gap-1 text-xs text-slate-500 mt-1"><Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> <span className="font-bold text-slate-700">4.9</span> (120+ reviews)</div>
                          </div>

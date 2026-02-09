@@ -1,186 +1,107 @@
-![Work in Progress](https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif)
+# 🏥 MediFlow AI - Advanced Healthcare Ecosystem
 
+![Status](https://img.shields.io/badge/Status-Beta-blue)
+![MERN](https://img.shields.io/badge/Stack-MERN-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-```markdown
-# 🏥 MediFlow AI - Telemedicine Scheduling Platform
-
-**MediFlow AI** is a full-stack telemedicine application designed to streamline the appointment booking process between patients and doctors. It features a robust two-sided marketplace with real-time availability tracking, conflict detection, and role-based dashboards.
+**MediFlow AI** is a comprehensive, full-stack healthcare platform designed to bridge the gap between patients, doctors, and diagnostic centers. It goes beyond simple appointment booking to offer a complete medical ecosystem including an E-Pharmacy, Smart Lab Booking, and a sophisticated Super Admin monitoring suite.
 
 ---
 
-## 🚀 Features (Current MVP Status)
+## 🚀 Features & Modules
 
-### 🧑‍🦱 **Patient Ecosystem**
-* **Smart Booking System:** Interactive calendar with real-time slot availability.
-* **Conflict Detection:** Booked slots automatically turn **RED** and become unclickable to prevent double-booking.
-* **Dashboard:** View health stats, upcoming appointments, and appointment history.
-* **Cancellation:** Ability to cancel appointments, immediately freeing up the slot for others.
-* **Video Integration:** Auto-generated Google Meet links for every booking.
+### 🧑‍🦱 **Patient Portal**
+* **Smart Appointment Booking:** Real-time slot availability with conflict detection (no double-booking).
+* **E-Pharmacy:** Full-fledged e-commerce store for medicines with cart management and category filtering.
+* **Smart Lab Tests:** Book diagnostic tests with "Home Collection" vs. "Lab Visit" indicators.
+* **Location Intelligence:** Auto-detects user city to filter nearby lab services.
+* **AI Prescription Analysis:** (Beta) Upload a prescription to auto-suggest required tests.
 
-### 👨‍⚕️ **Doctor Ecosystem**
-* **Dedicated Dashboard:** Secure login for medical professionals.
-* **Live Schedule:** View all upcoming patient appointments in real-time.
-* **Status Management:** Track pending and completed consultations.
-* **Patient Insights:** View patient names and reasons for visits.
+### 👨‍⚕️ **Doctor Dashboard**
+* **Live Schedule:** View upcoming appointments in real-time.
+* **Patient Management:** Access patient history and appointment reasons.
+* **Secure Access:** Role-Based Access Control (RBAC) ensuring doctors only see their data.
+
+### 🕵️‍♂️ **Super Admin (God Mode)**
+* **The "Spy Log":** An audit trail that logs every sensitive action (e.g., "Dr. X viewed Patient Y's report").
+* **Live User Map:** Tracks active users and their real-time locations across the platform.
+* **Global Stats:** Monitor total revenue, server health, and security events.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** React (Vite), Tailwind CSS, Lucide React (Icons).
+* **Frontend:** React.js (Vite), Tailwind CSS, Lucide React (Icons).
 * **Backend:** Node.js, Express.js.
-* **Database:** MongoDB Atlas (Cloud).
+* **Database:** MongoDB Atlas (Mongoose ODM).
 * **Authentication:** JWT (JSON Web Tokens) & Local Storage.
+* **Integrations:** OpenStreetMap (Geolocation), Google Gemini (Planned for AI Analysis).
 
 ---
 
-## 📋 Prerequisites
+## ✅ Project Checklist (Status)
 
-Before you begin, ensure you have the following installed:
-1.  **Node.js** (v18 or higher) - [Download Here](https://nodejs.org/)
-2.  **Git** - [Download Here](https://git-scm.com/)
-3.  **MongoDB Atlas URI** - You need a connection string from your MongoDB Cloud account.
+### **Completed Modules** 🟢
+- [x] **Authentication System** (Login/Register with RBAC).
+- [x] **Doctor Dashboard** (Appointments & Stats).
+- [x] **Patient Dashboard** (Booking Flow).
+- [x] **Pharmacy Store** (Cart, Categories, Search).
+- [x] **Lab Test Booking** (Location Detection, Home/Lab Filter).
+- [x] **Super Admin Dashboard** (Spy Log, User Map).
+- [x] **Backend API** (RESTful architecture for Users, Doctors, Orders, Logs).
 
----
-
-## ⚙️ Installation & Setup Guide
-
-Follow these steps exactly to run the project on **Mac** or **Windows**.
-
-### **Step 1: Clone the Repository**
-Open your Terminal (Mac) or Command Prompt/PowerShell (Windows) and run:
-
-```bash
-git clone <YOUR_GITHUB_REPO_URL_HERE>
-cd mediflow-ai
-
-```
+### **In Progress / Next Steps** 🟡
+- [ ] **AI Integration:** Connect Google Gemini API to the "Prescription Analyzer" UI.
+- [ ] **Payment Gateway:** Integrate Stripe/Razorpay for checkout.
+- [ ] **Email Notifications:** Send confirmation emails via Nodemailer.
 
 ---
 
-### **Step 2: Backend Setup (Server)**
+## ⚙️ Installation & Setup
 
-1. Navigate to the server folder:
-```bash
+1. **Clone the Repo**
+   ```bash
+   git clone <YOUR_GITHUB_REPO_URL>
+   cd mediflow-ai
+Backend Setup
+
+Bash
 cd server-node
-
-```
-
-
-2. Install dependencies:
-```bash
 npm install
+# Create a .env file with: PORT=5001, MONGO_URI=..., JWT_SECRET=...
+npm start
+Frontend Setup
 
-```
-
-
-3. **Configure Environment Variables:**
-Create a new file named `.env` inside the `server-node` folder and paste the following:
-```env
-PORT=5001
-MONGO_URI=your_mongodb_connection_string_here
-JWT_SECRET=supersecretkey123
-
-```
-
-
-*(Replace `your_mongodb_connection_string_here` with your actual MongoDB URL).*
-4. Start the Backend Server:
-```bash
-node server.js
-
-```
-
-
-*You should see: `✅ MongoDB Connected` and `🚀 Server running on port 5001*`
-
----
-
-### **Step 3: Frontend Setup (Client)**
-
-1. Open a **new** Terminal window (keep the backend running in the first one).
-2. Navigate to the client folder:
-```bash
+Bash
 cd client
-
-```
-
-
-3. Install dependencies:
-```bash
 npm install
-
-```
-
-
-4. Start the React Application:
-```bash
 npm run dev
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-```
-
-
-*You should see a local URL, typically `http://localhost:5173`.*
-
----
-
-## 🧪 How to Test the App
-
-### **1. Patient Flow**
-
-1. Open `http://localhost:5173` in your browser.
-2. **Sign Up** as a new user (Role: Patient).
-3. Go to the **Dashboard**.
-4. Select a **Date** from the calendar.
-5. **Book a Slot** (e.g., 10:00 AM).
-* *Observation:* The slot is booked successfully.
-
-
-6. Refresh the page and select the same date.
-* *Observation:* The 10:00 AM button is now **RED** and disabled.
-
-
-
-### **2. Doctor Flow**
-
-1. Log out and **Sign Up** as a new user (Role: Doctor).
-2. You will be redirected to the **Doctor Dashboard**.
-3. Check "My Schedule".
-* *Observation:* You should see the appointment created by the patient in step 1.
-
-
+👨‍💻 Created by Solomon Pattapu
 
 ---
 
-## 🐛 Troubleshooting
 
-**1. "Slots are not turning red"**
+MIT License
 
-* **Cause:** Old data in the database might have Timezone conflicts.
-* **Fix:** Open MongoDB Compass, delete all documents in the `appointments` collection, and book a new slot. The system now uses strict String matching (`"YYYY-MM-DD"`) to prevent this.
+Copyright (c) 2026 Solomon Pattapu
 
-**2. "Network Error" or "Connection Refused"**
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-* Ensure your Backend is running on port **5001**.
-* Ensure your Frontend is trying to fetch from `http://localhost:5001`.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-**3. "Login failed"**
-
-* Check if your `MONGO_URI` in `.env` is correct.
-* Ensure your IP address is whitelisted in MongoDB Atlas Network Access.
-
----
-
-## 🔮 Future Roadmap (To-Do)
-
-* [ ] **AI Analysis:** Integrate Gemini API to analyze uploaded lab reports.
-* [ ] **Video Calls:** Embed Jitsi/WebRTC for in-app video calls.
-* [ ] **Payments:** Stripe integration for paid consultations.
-
----
-
-### 👨‍💻 Created by Solomon Pattapu
-
-```
-
-```
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

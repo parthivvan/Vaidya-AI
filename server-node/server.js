@@ -1,16 +1,19 @@
 const express = require("express");
 const dotenv = require("dotenv");
+
+// 🟢 CRITICAL FIX: Load .env BEFORE importing any routes or database models
+dotenv.config(); 
+
 const mongoose = require("mongoose");
 const cors = require("cors");
+
+// Now it is safe to import routes (because .env is loaded)
 const medicineRoutes = require("./routes/medicine.route");
 const orderRoutes = require("./routes/order.route");
 
-dotenv.config();
-
 const app = express();
 
-// --- STEP 0: THE "SPY" LOGGER (Must be absolutely first) ---
-// This will print details for EVERY request, even if CORS blocks it later.
+// --- STEP 0: THE "SPY" LOGGER ---
 app.use((req, res, next) => {
   console.log("-----------------------------------------");
   console.log(`📨 NEW REQUEST: ${req.method} ${req.url}`);
@@ -20,7 +23,6 @@ app.use((req, res, next) => {
 });
 
 // --- STEP 1: DYNAMIC CORS ---
-// Instead of hardcoding one URL, we check if the origin is trusted.
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
@@ -29,13 +31,11 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.log(`❌ BLOCKED BY CORS: ${origin}`); // Log if we block it
+      console.log(`❌ BLOCKED BY CORS: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -60,5 +60,9 @@ app.use("/api/appointments", require("./routes/appointment.route"));
 app.use("/api/labs", require("./routes/lab.route"));
 app.use("/api/medicines", medicineRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/admin", require("./routes/admin.route"));
+app.use("/api/lab-tests", require("./routes/labTest.route"));
+app.use("/api/users", require("./routes/user.route"));
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
