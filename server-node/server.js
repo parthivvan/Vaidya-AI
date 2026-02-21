@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 
 // 🟢 CRITICAL FIX: Load .env BEFORE importing any routes or database models
-dotenv.config(); 
+dotenv.config();
 
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -10,6 +10,7 @@ const cors = require("cors");
 // Now it is safe to import routes (because .env is loaded)
 const medicineRoutes = require("./routes/medicine.route");
 const orderRoutes = require("./routes/order.route");
+const imageRoutes = require("./routes/image.route");
 
 const app = express();
 
@@ -63,6 +64,8 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/admin", require("./routes/admin.route"));
 app.use("/api/lab-tests", require("./routes/labTest.route"));
 app.use("/api/users", require("./routes/user.route"));
+app.use("/api/prescriptions", require("./routes/prescription.route")); // 🟢 Prescriptions Route
+app.use("/api/vision", imageRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -2,183 +2,228 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { 
-  LayoutDashboard, Calendar, FlaskConical, Folder, 
-  MessageSquare, Settings, Bell, Search, Activity, 
-  Clock, Users, Video, XCircle, FileText, Eye, CheckCircle
+import {
+    LayoutDashboard, Calendar, FlaskConical, Folder,
+    MessageSquare, Settings, Bell, Search, Activity,
+    Clock, Users, Video, XCircle, FileText, Eye, CheckCircle, PenTool,
+    Scan, User, Download, ActivitySquare // 🟢 ADDED NEW ICONS
 } from 'lucide-react';
+import PrescriptionModal from '../components/PrescriptionModal';
+import XRayScanner from './XRayScanner';
+import LabTests from './LabTests'; // 🟢 ADD THIS
 
 const DoctorDashboard = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('schedule'); // Default to Schedule
-  const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
-  // 🛡️ SECURITY BOUNCER
-  useEffect(() => {
-    if (user && user.role !== 'doctor') navigate("/dashboard");
-  }, [user, navigate]);
+    // --- STATE ---
+    const [activeTab, setActiveTab] = useState('schedule');
+    const [activePatient, setActivePatient] = useState(null); // 🟢 STATE FOR PATIENT CONTEXT
+    const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedAppointmentForRx, setSelectedAppointmentForRx] = useState(null);
 
-  // 1. Fetch Schedule (Appointments)
-  const fetchSchedule = async () => {
-      if (!user?.id) return;
-      try {
-        const res = await fetch(`http://localhost:5001/api/appointments/doctor/${user.id}`); 
-        if(res.ok) setAppointments(await res.json());
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
-      }
-  };
+    // 🛡️ SECURITY BOUNCER
+    useEffect(() => {
+        if (user && user.role !== 'doctor') navigate("/dashboard");
+    }, [user, navigate]);
 
-  useEffect(() => {
-    if (user?.role === 'doctor') fetchSchedule();
-  }, [user]);
+    const fetchSchedule = async () => {
+        if (!user?.id) return;
+        try {
+            const res = await fetch(`http://localhost:5001/api/appointments/doctor/${user.id}`);
+            if (res.ok) {
+                const data = await res.json();
+                setAppointments(data);
+            }
+        } catch (error) {
+            console.error("Error fetching schedule:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  // 2. 🕵️‍♂️ SPY FUNCTION (Tracks when you view a report)
-  const trackFileAccess = async (patientName, reportName) => {
-      const toastId = toast.loading("Decrypting Secure File...");
-      try {
-          await fetch("http://localhost:5001/api/admin/log-access", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                  doctorId: user.id, 
-                  patientId: "65d4c8f9a2b3c4d5e6f7a8b9", // Dummy ID for demo reports
-                  details: `Opened report: ${reportName} for ${patientName}`
-              })
-          });
-          toast.success("Access Authorized & Logged", { id: toastId });
-      } catch (err) {
-          console.error("Spy failed:", err);
-          toast.error("Access Error", { id: toastId });
-      }
-  };
+    useEffect(() => {
+        if (user?.role === 'doctor') fetchSchedule();
+    }, [user]);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+    const trackFileAccess = async (patientName, reportName) => {
+        const toastId = toast.loading("Decrypting Secure File...");
+        try {
+            await fetch("http://localhost:5001/api/admin/log-access", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    doctorId: user.id,
+                    patientId: "65d4c8f9a2b3c4d5e6f7a8b9",
+                    details: `Opened report: ${reportName} for ${patientName}`
+                })
+            });
+            toast.success("Access Authorized & Logged", { id: toastId });
+        } catch (err) {
+            console.error("Spy failed:", err);
+            toast.error("Access Error", { id: toastId });
+        }
+    };
 
-  return (
-    <div className="flex h-screen bg-[#f6f6f8] font-sans text-[#100e1b] overflow-hidden">
-      {/* INJECT FONTS */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-        .font-display { font-family: 'Space Grotesk', sans-serif; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d3d1e6; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #5747e6; }
-      `}</style>
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
 
-      {/* 🟢 SIDEBAR NAVIGATION */}
-      <aside className="w-64 bg-white border-r border-gray-100 flex flex-col py-6 px-4 hidden md:flex z-20 shadow-sm">
-        <div className="flex items-center gap-3 px-2 mb-8">
-          <div className="w-10 h-10 bg-[#5747e6]/10 rounded-xl flex items-center justify-center text-[#5747e6]">
-            <Activity className="w-6 h-6" />
-          </div>
-          <h2 className="text-xl font-bold tracking-tight font-display">MediFlow AI</h2>
-        </div>
+    return (
+        <div className="flex h-screen bg-[#f6f6f8] font-sans text-[#100e1b] overflow-hidden">
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+                .font-display { font-family: 'Space Grotesk', sans-serif; }
+                ::-webkit-scrollbar { width: 8px; }
+                ::-webkit-scrollbar-track { background: transparent; }
+                ::-webkit-scrollbar-thumb { background: #d3d1e6; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb:hover { background: #5747e6; }
+            `}</style>
 
-        <nav className="flex flex-col gap-2 font-display">
-          <SidebarItem icon={LayoutDashboard} label="Overview" onClick={() => setActiveTab('schedule')} active={activeTab === 'schedule'} />
-          <SidebarItem icon={FlaskConical} label="Smart Lab Analysis" onClick={() => setActiveTab('research')} active={activeTab === 'research'} isSpecial />
-          <SidebarItem icon={Folder} label="Patient Records" onClick={() => {}} />
-          <SidebarItem icon={MessageSquare} label="Consultations" onClick={() => {}} />
-        </nav>
-
-        <div className="mt-auto">
-          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#575095] hover:bg-red-50 hover:text-red-600 transition-all w-full font-display">
-            <Settings className="w-5 h-5" />
-            <span className="text-sm font-medium">Log Out</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* 🔵 MAIN CONTENT */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
-        
-        {/* TOP HEADER */}
-        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
-            <div className="flex items-center bg-[#f6f6f8] rounded-xl px-4 py-2.5 w-96">
-                <Search className="w-5 h-5 text-[#575095]" />
-                <input type="text" placeholder="Search patients..." className="bg-transparent border-none outline-none text-sm ml-3 w-full placeholder-[#575095]/50 font-display" />
-            </div>
-
-            <div className="flex items-center gap-6">
-                <div className="text-right hidden xl:block font-display">
-                    <p className="text-sm font-bold text-[#100e1b] leading-tight">Dr. {user?.fullName}</p>
-                    <p className="text-xs text-[#575095] font-medium">Specialist</p>
+            {/* 🟢 SIDEBAR NAVIGATION */}
+            <aside className="w-64 bg-white border-r border-gray-100 flex flex-col py-6 px-4 hidden md:flex z-20 shadow-sm">
+                <div className="flex items-center gap-3 px-2 mb-8">
+                    <div className="w-10 h-10 bg-[#5747e6]/10 rounded-xl flex items-center justify-center text-[#5747e6]">
+                        <Activity className="w-6 h-6" />
+                    </div>
+                    <h2 className="text-xl font-bold tracking-tight font-display">MediFlow AI</h2>
                 </div>
-                <div className="w-10 h-10 bg-[#5747e6] rounded-full flex items-center justify-center text-white font-bold shadow-lg shadow-[#5747e6]/20">
-                    {user?.fullName?.charAt(0) || "D"}
-                </div>
-            </div>
-        </header>
 
-        {/* SCROLLABLE CONTENT AREA */}
-        <div className="flex-1 overflow-y-auto p-8 font-display">
-            <div className="max-w-7xl mx-auto pb-12">
-                
-                {/* PAGE HEADER */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-                    <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="bg-[#5747e6]/10 text-[#5747e6] px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">
-                                {activeTab === 'research' ? 'AI Analysis Mode' : 'Dashboard'}
-                            </span>
+                <nav className="flex flex-col gap-2 font-display">
+                    <SidebarItem icon={LayoutDashboard} label="Overview" onClick={() => { setActiveTab('schedule'); setActivePatient(null); }} active={activeTab === 'schedule' || activeTab === 'profile'} />
+                    <SidebarItem icon={FlaskConical} label="Smart Lab Analysis" onClick={() => { setActiveTab('research'); setActivePatient(null); }} active={activeTab === 'research'} />
+                    <SidebarItem icon={Scan} label="Vision AI (X-Ray)" onClick={() => { setActiveTab('xray'); setActivePatient(null); }} active={activeTab === 'xray'} isSpecial />
+                    <SidebarItem icon={Folder} label="Patient Records" onClick={() => { }} />
+                    <SidebarItem icon={MessageSquare} label="Consultations" onClick={() => { }} />
+                </nav>
+
+                <div className="mt-auto">
+                    <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#575095] hover:bg-red-50 hover:text-red-600 transition-all w-full font-display">
+                        <Settings className="w-5 h-5" />
+                        <span className="text-sm font-medium">Log Out</span>
+                    </button>
+                </div>
+            </aside>
+
+            {/* 🔵 MAIN CONTENT */}
+            <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
+
+                <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
+                    <div className="flex items-center bg-[#f6f6f8] rounded-xl px-4 py-2.5 w-96">
+                        <Search className="w-5 h-5 text-[#575095]" />
+                        <input type="text" placeholder="Search patients..." className="bg-transparent border-none outline-none text-sm ml-3 w-full placeholder-[#575095]/50 font-display" />
+                    </div>
+
+                    <div className="flex items-center gap-6">
+                        <div className="text-right hidden xl:block font-display">
+                            <p className="text-sm font-bold text-[#100e1b] leading-tight">Dr. {user?.fullName || "Sarah Chen"}</p>
+                            <p className="text-xs text-[#575095] font-medium">Specialist</p>
                         </div>
-                        <h1 className="text-3xl md:text-4xl font-bold text-[#100e1b] tracking-tight">
-                            {activeTab === 'research' ? 'Smart Lab Reports' : 'My Schedule & Queue'}
-                        </h1>
+                        <div className="w-10 h-10 bg-[#5747e6] rounded-full flex items-center justify-center text-white font-bold shadow-lg shadow-[#5747e6]/20">
+                            {user?.fullName?.charAt(0) || "D"}
+                        </div>
+                    </div>
+                </header>
+
+                <div className="flex-1 overflow-y-auto p-8 font-display">
+                    <div className="max-w-7xl mx-auto pb-12">
+
+                        {/* PAGE HEADER (Hidden if on profile page to save space) */}
+                        {activeTab !== 'profile' && (
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="bg-[#5747e6]/10 text-[#5747e6] px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">
+                                            {activeTab === 'research' ? 'Lab Analysis Mode' : activeTab === 'xray' ? 'PyTorch Vision Core' : 'Dashboard'}
+                                        </span>
+                                    </div>
+                                    <h1 className="text-3xl md:text-4xl font-bold text-[#100e1b] tracking-tight">
+                                        {activeTab === 'research' ? 'Smart Lab Reports' : activeTab === 'xray' ? 'Vision AI Diagnostics' : 'My Schedule & Queue'}
+                                    </h1>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 🔀 DYNAMIC ROUTING LOGIC */}
+                        {activeTab === 'profile' && activePatient ? (
+                            <PatientProfileView
+                                patient={activePatient}
+                                appointments={appointments} // 🟢 1. Pass appointments here
+                                onBack={() => {
+                                    setActiveTab('schedule');
+                                    setActivePatient(null);
+                                }}
+                                onStartXRay={(patientData) => {
+                                    setActivePatient(patientData);
+                                    setActiveTab('xray');
+                                }}
+                            />
+                        ) : activeTab === 'research' ? (
+                            <LabResearchView
+                                appointments={appointments}
+                                onViewReport={trackFileAccess}
+                                onRunAI={() => setActiveTab('lab-ai')} // 🟢 Tab Switcher
+                            />
+                        ) : activeTab === 'lab-ai' ? ( // 🟢 RENDER THE LAB COMPONENT
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <LabTests />
+                            </div>
+                        ) : activeTab === 'xray' ? (
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <XRayScanner patient={activePatient} />
+                            </div>
+                        ) : (
+                            <ScheduleView
+                                appointments={appointments}
+                                loading={loading}
+                                refresh={fetchSchedule}
+                                onWriteRx={setSelectedAppointmentForRx}
+                                onViewProfile={(patientData) => {
+                                    setActivePatient(patientData);
+                                    setActiveTab('profile');
+                                }}
+                            />
+                        )}
+
+                        <PrescriptionModal
+                            isOpen={!!selectedAppointmentForRx}
+                            appointment={selectedAppointmentForRx}
+                            onClose={() => setSelectedAppointmentForRx(null)}
+                            onSuccess={() => fetchSchedule()}
+                        />
+
                     </div>
                 </div>
-
-                {/* 🔀 CONDITIONAL CONTENT */}
-                {activeTab === 'research' ? (
-                    <LabResearchView onViewReport={trackFileAccess} />
-                ) : (
-                    <ScheduleView appointments={appointments} loading={loading} refresh={fetchSchedule} />
-                )}
-
-            </div>
+            </main>
         </div>
-      </main>
-    </div>
-  );
+    );
 };
 
 // --- 🧩 SUB-COMPONENTS ---
 
 const SidebarItem = ({ icon: Icon, label, active, isSpecial, onClick }) => (
-    <button 
+    <button
         onClick={onClick}
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all group w-full ${
-            active ? 'bg-[#f6f6f8] text-[#100e1b] font-bold' : 'text-[#575095] hover:bg-[#f6f6f8]'
-        } ${isSpecial && !active ? 'bg-[#5747e6]/5 text-[#5747e6]' : ''}`}
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all group w-full ${active ? 'bg-[#f6f6f8] text-[#100e1b] font-bold' : 'text-[#575095] hover:bg-[#f6f6f8]'
+            } ${isSpecial && !active ? 'bg-[#5747e6]/5 text-[#5747e6]' : ''}`}
     >
         <Icon className={`w-5 h-5 ${active || isSpecial ? 'text-[#5747e6]' : 'group-hover:text-[#5747e6] transition-colors'}`} />
         <span className={`text-sm font-medium ${active ? 'font-bold' : ''}`}>{label}</span>
     </button>
 );
 
-// --- 📅 SCHEDULE VIEW (With Stats + Cancel Logic) ---
-const ScheduleView = ({ appointments, loading, refresh }) => {
-    
-    // Cancel Handler
+// --- 📅 SCHEDULE VIEW (With View Profile Button) ---
+const ScheduleView = ({ appointments, loading, refresh, onWriteRx, onViewProfile }) => {
     const handleStatusChange = async (id, status) => {
         const toastId = toast.loading("Updating...");
         try {
-            // Reusing the cancel route we created
-            let url = `http://localhost:5001/api/appointments/cancel/${id}`;
+            const url = `http://localhost:5001/api/appointments/cancel/${id}`;
             const res = await fetch(url, { method: "PUT" });
-            
             if (res.ok) {
                 toast.success(`Appointment Cancelled`, { id: toastId });
-                refresh(); // Reload data
+                refresh();
             } else {
                 toast.error("Failed to update", { id: toastId });
             }
@@ -189,14 +234,12 @@ const ScheduleView = ({ appointments, loading, refresh }) => {
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Stats Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <StatCard icon={Users} label="Total Patients" value={appointments.length} color="text-blue-600" bg="bg-blue-50" />
                 <StatCard icon={Clock} label="Pending" value={appointments.filter(a => a.status === 'pending' || a.status === 'confirmed').length} color="text-amber-600" bg="bg-amber-50" />
                 <StatCard icon={CheckCircle} label="Completed" value={appointments.filter(a => a.status === 'completed').length} color="text-emerald-600" bg="bg-emerald-50" />
             </div>
 
-            {/* Appointment List */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-2px_rgba(87,71,230,0.08)] overflow-hidden">
                 <div className="p-6 border-b border-gray-100 flex items-center justify-between">
                     <h3 className="font-bold text-lg text-[#100e1b]">Upcoming Appointments</h3>
@@ -209,40 +252,68 @@ const ScheduleView = ({ appointments, loading, refresh }) => {
                     ) : (
                         appointments.map(appt => {
                             const isCancelled = appt.status === 'cancelled';
+                            const isCompleted = appt.status === 'completed';
+                            // Extract patient data safely
+                            const patientData = appt.patientId || { _id: appt._id, fullName: "Unknown Patient" };
+
                             return (
-                                <div key={appt._id} className={`p-6 transition-colors flex flex-col md:flex-row md:items-center gap-6 group ${isCancelled ? 'bg-gray-50 opacity-60' : 'hover:bg-[#f6f6f8]'}`}>
-                                    
-                                    {/* Time Box */}
-                                    <div className={`flex flex-col items-center justify-center w-16 h-16 rounded-2xl font-display ${isCancelled ? 'bg-gray-200 text-gray-500' : 'bg-[#5747e6]/5 text-[#5747e6]'}`}>
-                                        <span className="text-lg font-bold">{appt.timeSlot.split(' ')[0]}</span>
-                                        <span className="text-[10px] uppercase font-bold tracking-wider">{appt.timeSlot.split(' ')[1] || 'AM'}</span>
-                                    </div>
-                                    
-                                    {/* Info */}
-                                    <div className="flex-1">
-                                        <h4 className="text-lg font-bold text-[#100e1b] flex items-center gap-2">
-                                            {appt.patientId?.fullName || "Unknown Patient"}
-                                            {isCancelled && <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full uppercase">Cancelled</span>}
-                                        </h4>
-                                        <p className="text-sm text-[#575095] flex items-center gap-2 mt-1">
-                                            <FileText className="w-3 h-3" /> Reason: {appt.reason || "General Consultation"}
-                                        </p>
+                                <div key={appt._id} className={`p-6 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-6 group ${isCancelled ? 'bg-gray-50 opacity-60' : 'hover:bg-[#f6f6f8]'}`}>
+
+                                    <div className="flex items-center gap-6">
+                                        <div className={`flex flex-col items-center justify-center w-16 h-16 rounded-2xl font-display shrink-0 ${isCancelled ? 'bg-gray-200 text-gray-500' : 'bg-[#5747e6]/5 text-[#5747e6]'}`}>
+                                            <span className="text-lg font-bold">{appt.timeSlot ? appt.timeSlot.split(' ')[0] : '10:00'}</span>
+                                            <span className="text-[10px] uppercase font-bold tracking-wider">{appt.timeSlot ? appt.timeSlot.split(' ')[1] : 'AM'}</span>
+                                        </div>
+
+                                        <div>
+                                            <h4 className="text-lg font-bold text-[#100e1b] flex items-center gap-2">
+                                                {patientData.fullName || patientData.name || "Unknown Patient"}
+                                                {isCancelled && <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full uppercase">Cancelled</span>}
+                                                {isCompleted && <span className="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full uppercase flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Completed</span>}
+                                            </h4>
+                                            <p className="text-sm text-[#575095] flex items-center gap-2 mt-1">
+                                                <Calendar className="w-3 h-3" /> {appt.date} • {appt.reason || "General Consultation"}
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    {/* Actions */}
-                                    {!isCancelled && (
-                                        <div className="flex items-center gap-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                                            <button 
-                                                onClick={() => handleStatusChange(appt._id, 'cancelled')}
-                                                className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2" title="Cancel Appointment">
-                                                <XCircle className="w-5 h-5" /> <span className="text-sm font-bold md:hidden">Cancel</span>
+                                    {!isCancelled && !isCompleted && (
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            {/* 🟢 VIEW PROFILE BUTTON INJECTED HERE */}
+                                            <button
+                                                onClick={() => onViewProfile(patientData)}
+                                                className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-[#5747e6] rounded-lg font-bold text-sm hover:bg-indigo-100 transition-all"
+                                            >
+                                                <User className="w-4 h-4" /> View Profile
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => window.open(appt.meetingLink, "_blank")}
-                                                className="flex items-center gap-2 px-4 py-2 bg-[#5747e6] text-white rounded-lg font-bold text-sm shadow-lg shadow-[#5747e6]/20 hover:bg-[#4638b9] transition-all"
+                                                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-[#100e1b] rounded-lg font-bold text-sm hover:border-[#5747e6] hover:text-[#5747e6] transition-all"
                                             >
                                                 <Video className="w-4 h-4" /> Start Call
+                                            </button>
+
+                                            <button
+                                                onClick={() => onWriteRx(appt)}
+                                                className="flex items-center gap-2 px-4 py-2.5 bg-[#5747e6] text-white rounded-lg font-bold text-sm shadow-lg shadow-[#5747e6]/20 hover:bg-[#4638b9] transition-all"
+                                            >
+                                                <PenTool className="w-4 h-4" /> Write Rx
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {isCompleted && (
+                                        <div className="flex items-center gap-3">
+                                            {/* View Profile Button on completed appts too! */}
+                                            <button
+                                                onClick={() => onViewProfile(patientData)}
+                                                className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-[#5747e6] rounded-lg font-bold text-sm hover:bg-indigo-100 transition-all"
+                                            >
+                                                <User className="w-4 h-4" /> View Profile
+                                            </button>
+                                            <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-500 rounded-lg font-bold text-sm cursor-not-allowed">
+                                                <FileText className="w-4 h-4" /> Rx Issued
                                             </button>
                                         </div>
                                     )}
@@ -256,54 +327,139 @@ const ScheduleView = ({ appointments, loading, refresh }) => {
     );
 };
 
-// --- 🧪 LAB RESEARCH VIEW (Spy Feature) ---
-const LabResearchView = ({ onViewReport }) => {
-    // Dummy Data for Demo
-    const reports = [
-        { id: 1, patient: "John Doe", test: "Complete Blood Count (CBC)", date: "Feb 18, 2026", status: "Critical", file: "cbc_report.pdf" },
-        { id: 2, patient: "Sarah Smith", test: "Lipid Profile", date: "Feb 17, 2026", status: "Normal", file: "lipid_scan.pdf" },
-    ];
+// --- 👤 PATIENT PROFILE VIEW ---
+const PatientProfileView = ({ patient, appointments, onBack, onStartXRay }) => {
+
+    // 🟢 DYNAMICALLY GET REAL LABS FOR THIS PATIENT
+    const pastLabs = appointments.filter(appt =>
+        (appt.patientId?._id === patient._id || appt.patientId === patient._id) &&
+        appt.attachedReportUrl
+    );
+
+    return (
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <button onClick={onBack} className="flex items-center gap-2 text-[#575095] hover:text-[#5747e6] font-bold mb-6 transition-colors">
+                ← Back to Schedule
+            </button>
+
+            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm flex items-center justify-between mb-8">
+                <div className="flex items-center gap-6">
+                    <div className="w-20 h-20 bg-[#5747e6]/10 text-[#5747e6] rounded-2xl flex items-center justify-center text-3xl font-bold font-display">
+                        {patient?.fullName?.charAt(0) || patient?.name?.charAt(0) || "P"}
+                    </div>
+                    <div>
+                        <h2 className="text-3xl font-bold text-[#100e1b] font-display">{patient?.fullName || patient?.name || "Patient Name"}</h2>
+                        <p className="text-sm text-[#575095] font-medium mt-1">Patient ID: {patient?._id || "N/A"} • Profile Access Verified</p>
+                    </div>
+                </div>
+                <button
+                    onClick={() => onStartXRay(patient)}
+                    className="flex items-center gap-2 px-6 py-3 bg-[#5747e6] text-white rounded-xl font-bold shadow-lg shadow-[#5747e6]/20 hover:bg-indigo-700 transition-all">
+                    <Scan className="w-5 h-5" />
+                    New AI X-Ray Scan
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 className="text-lg font-bold text-[#100e1b] mb-4 flex items-center gap-2">
+                        <FlaskConical className="w-5 h-5 text-[#5747e6]" /> Diagnostic Lab Reports
+                    </h3>
+                    <div className="space-y-3">
+                        {pastLabs.length > 0 ? pastLabs.map(lab => (
+                            <div key={lab._id} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-[#f6f6f8] transition-colors group">
+                                <div>
+                                    <p className="font-bold text-sm text-[#100e1b]">{lab.attachedReportName || "Lab Report PDF"}</p>
+                                    <p className="text-xs text-[#575095] mt-1">{lab.date}</p>
+                                </div>
+                                {/* 🟢 REAL DOWNLOAD/VIEW BUTTON */}
+                                <button
+                                    onClick={() => window.open(lab.attachedReportUrl, "_blank")}
+                                    className="p-2 bg-white border border-gray-200 rounded-lg text-[#575095] group-hover:text-[#5747e6] group-hover:border-[#5747e6] transition-all shadow-sm">
+                                    <Download className="w-4 h-4" />
+                                </button>
+                            </div>
+                        )) : (
+                            <p className="text-sm text-slate-500 italic p-4 text-center">No lab reports attached to this profile.</p>
+                        )}
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 className="text-lg font-bold text-[#100e1b] mb-4 flex items-center gap-2">
+                        <ActivitySquare className="w-5 h-5 text-[#5747e6]" /> Vision AI Imaging
+                    </h3>
+                    <div className="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                        <Scan className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                        <p className="text-sm font-bold text-slate-600">No previous imaging records.</p>
+                        <p className="text-xs text-slate-500 mt-1">Run a new AI scan to append to record.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- 🧪 LAB RESEARCH VIEW (Master List of all uploaded PDFs) ---
+// --- 🧪 LAB RESEARCH VIEW (Master List of all uploaded PDFs) ---
+const LabResearchView = ({ appointments, onViewReport, onRunAI }) => { // 🟢 Add onRunAI
+
+    // 🟢 Filter ALL appointments to find the ones with attached reports
+    const reports = appointments.filter(appt => appt.attachedReportUrl);
 
     return (
         <div className="grid gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-             <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl flex items-center gap-3 text-indigo-700 mb-4">
+            <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl flex items-center gap-3 text-indigo-700 mb-4">
                 <Activity className="w-5 h-5" />
                 <span className="text-sm font-bold">Secure Access Mode: All file interactions are logged for compliance.</span>
-             </div>
+            </div>
 
-            {reports.map((report) => (
-                <div key={report.id} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-all">
-                    <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                            report.status === 'Critical' ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500'
-                        }`}>
-                            <FileText className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-lg text-slate-900">{report.test}</h3>
-                            <p className="text-slate-500 text-sm">Patient: <span className="font-bold text-slate-700">{report.patient}</span></p>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-                            report.status === 'Critical' ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'
-                        }`}>
-                            {report.status}
-                        </span>
-
-                        <button 
-                            onClick={() => {
-                                window.open("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", "_blank");
-                                onViewReport(report.patient, report.test); // 🚨 FIRE SPY LOG
-                            }}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#5747e6] text-white rounded-lg font-bold text-sm hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
-                        >
-                            <Eye className="w-4 h-4" /> View Report
-                        </button>
-                    </div>
+            {reports.length === 0 && (
+                <div className="p-10 text-center bg-white rounded-xl border border-dashed border-gray-200 text-gray-500">
+                    No lab reports have been uploaded by patients yet.
                 </div>
-            ))}
+            )}
+
+            {reports.map((report) => {
+                const patientName = report.patientId?.fullName || report.patientId?.name || "Unknown Patient";
+
+                return (
+                    <div key={report._id} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-all">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-indigo-50 text-indigo-500">
+                                <FileText className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-lg text-slate-900">{report.attachedReportName || "Lab Report PDF"}</h3>
+                                <p className="text-slate-500 text-sm">Patient: <span className="font-bold text-slate-700">{patientName}</span></p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-100 text-amber-700">
+                                Pending AI Analysis
+                            </span>
+
+                            {/* 🟢 VIEW ORIGINAL PDF BUTTON */}
+                            <button
+                                onClick={() => {
+                                    window.open(report.attachedReportUrl, "_blank");
+                                    onViewReport(patientName, report.attachedReportName);
+                                }}
+                                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg font-bold text-sm hover:border-[#5747e6] hover:text-[#5747e6] transition-colors"
+                            >
+                                <Eye className="w-4 h-4" /> View PDF
+                            </button>
+
+                            {/* 🟢 THE LAB ANALYZER BUTTON */}
+                            <button
+                                onClick={onRunAI}
+                                className="flex items-center gap-2 px-4 py-2 bg-[#5747e6] text-white rounded-lg font-bold text-sm hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">
+                                <Activity className="w-4 h-4" /> Run Lab AI
+                            </button>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 };

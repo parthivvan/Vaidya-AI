@@ -1,0 +1,77 @@
+# ─── Environment & Secrets ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.p12
+serviceAccountKey.json
+firebase-adminsdk*.json
+
+# ─── Python ───────────────────────────────────────────────────────────────────
+venv/
+env/
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+*.ipynb_checkpoints/
+
+# ─── Node / JavaScript ────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm
+.yarn-integrity
+
+# ─── Build Outputs ────────────────────────────────────────────────────────────
+dist/
+build/
+.next/
+out/
+.nuxt/
+.output/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# ─── OS & Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+*.log.*
+
+# ─── ML Model / Large Binary Files ───────────────────────────────────────────
+# *.pth   ← keep the trained model in the repo (comment out if you don't want it)
+
+# ─── Dataset (large) ──────────────────────────────────────────────────────────
+ai-service/dataset/

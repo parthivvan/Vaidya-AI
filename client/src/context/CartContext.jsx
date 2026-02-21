@@ -1,50 +1,69 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const CartContext = createContext();
 
-export const useCart = () => useContext(CartContext);
-
 export const CartProvider = ({ children }) => {
-  // Load from LocalStorage
+  // 1. INITIALIZE FROM LOCAL STORAGE
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('healthHiveCart');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const savedCart = localStorage.getItem('mediflow_cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      return [];
+    }
   });
 
+  // 2. AUTO-SAVE
   useEffect(() => {
-    localStorage.setItem('healthHiveCart', JSON.stringify(cart));
+    localStorage.setItem('mediflow_cart', JSON.stringify(cart));
   }, [cart]);
 
-  // 1. Add Item (Push to array)
+  // Add Item
   const addToCart = (product) => {
-    setCart((prev) => [...prev, product]);
-  };
-
-  // 2. Remove ALL instances (Trash Can behavior)
-  const removeFromCart = (productId) => {
-    setCart((prev) => prev.filter(item => item._id !== productId));
-  };
-
-  // 3. 🆕 Remove SINGLE instance (Minus button behavior)
-  const decreaseCartItem = (productId) => {
-    setCart((prev) => {
-      const index = prev.findIndex(item => item._id === productId);
-      if (index !== -1) {
-        const newCart = [...prev];
-        newCart.splice(index, 1); // Removes exactly one item at that index
-        return newCart;
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item._id === product._id);
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item._id === product._id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
+        );
       }
-      return prev;
+      return [...prevCart, { ...product, quantity: 1 }];
     });
   };
 
-  const clearCart = () => setCart([]);
+  // Remove Item
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
+  };
 
-  const cartTotal = cart.reduce((total, item) => total + item.price, 0);
+  // 🟢 NEW: INCREMENT / DECREMENT LOGIC
+  const updateQuantity = (productId, action) => {
+    setCart((prevCart) =>
+      prevCart.map((item) => {
+        if (item._id === productId) {
+          let currentQty = item.quantity || 1;
 
+          if (action === 'increase') currentQty += 1;
+          if (action === 'decrease' && currentQty > 1) currentQty -= 1; // Prevents going to 0
+
+          return { ...item, quantity: currentQty };
+        }
+        return item;
+      })
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem('mediflow_cart');
+  };
+
+  // 🟢 Make sure to export `updateQuantity` here!
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, decreaseCartItem, clearCart, cartTotal }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 };
+
+export const useCart = () => useContext(CartContext);

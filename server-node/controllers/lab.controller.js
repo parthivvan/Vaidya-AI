@@ -1,5 +1,6 @@
 const LabReport = require("../models/labReport.model");
 const User = require("../models/user.model");
+const LabAppointment = require("../models/labAppointment.model"); // 🟢 IMPORT THE MODEL YOU CREATED
 
 // 1. Create a New Report (Admin enters data)
 const createReport = async (req, res) => {
@@ -36,4 +37,28 @@ const getMyReports = async (req, res) => {
   }
 };
 
-module.exports = { createReport, getMyReports };
+// 3. 🟢 NEW: Book a Lab Test Slot
+const bookLabTest = async (req, res) => {
+  try {
+    const { patientId, labTestId, date, timeSlot } = req.body;
+
+    // Create the appointment in the database
+    const newAppointment = new LabAppointment({
+      patientId,
+      labTestId,
+      date,
+      timeSlot,
+      status: "pending",
+      reportStatus: "pending"
+    });
+
+    await newAppointment.save();
+
+    res.status(201).json({ message: "Lab Test Booked Successfully", appointment: newAppointment });
+  } catch (err) {
+    console.error("Booking Error:", err);
+    res.status(500).json({ message: "Server Error booking lab test" });
+  }
+};
+
+module.exports = { createReport, getMyReports, bookLabTest };

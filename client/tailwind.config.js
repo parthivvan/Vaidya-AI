@@ -15,7 +15,7 @@ export default {
         // --- Added for Stitch Design ---
         "background-light": "#f8fafc", /* slate-50 */
         "background-dark": "#0f172a", /* slate-900 */
-        
+
         // --- Existing Shadcn/UI Colors (Modified Primary) ---
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -24,7 +24,7 @@ export default {
         foreground: "hsl(var(--foreground))",
         primary: {
           // I updated this to the specific "Stitch Purple" so the design pops!
-          DEFAULT: "#5747e6", 
+          DEFAULT: "#5747e6",
           foreground: "#ffffff",
         },
         secondary: {
@@ -56,6 +56,15 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      animation: {
+        'scan': 'scan 3s linear infinite',
+      },
+      keyframes: {
+        scan: {
+          '0%': { top: '0%' },
+          '100%': { top: '100%' },
+        }
       },
     },
   },

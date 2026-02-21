@@ -1,43 +1,70 @@
 const Appointment = require("../models/appointment.model");
 const Doctor = require("../models/doctor.model");
+const cloudinary = require('cloudinary').v2;
 
-// 1. BOOK APPOINTMENT
+// 🟢 UPGRADED: Now accepts the original filename to extract the extension
+const streamUpload = (buffer, originalName) => {
+  // Extract 'pdf', 'jpg', 'png' from the filename
+  const ext = originalName.split('.').pop();
+
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: "auto",
+        folder: "mediflow_patient_reports",
+        format: ext // 🟢 FORCES Cloudinary to add .pdf to the final URL
+      },
+      (error, result) => {
+        if (result) resolve(result);
+        else reject(error);
+      }
+    );
+    stream.end(buffer);
+  });
+};
+
 const bookAppointment = async (req, res) => {
   try {
-    const { patientId, doctorId, date, timeSlot } = req.body;
+    // Now that Multer is in the route, req.body will exist!
+    const { patientId, doctorId, date, timeSlot, reason } = req.body;
 
-    // Check if slot is taken (String Match)
-    const existing = await Appointment.findOne({
-      doctorId,
-      date: date, 
-      timeSlot,
-      status: { $ne: "cancelled" }
-    });
+    let attachedReportUrl = null;
+    let attachedReportName = null;
 
-    if (existing) {
-      return res.status(400).json({ message: "Slot already booked!" });
+    // Check if Multer caught a file
+    // Check if Multer caught a file
+    if (req.file) {
+      console.log("📄 File detected! Uploading to Cloudinary...");
+      // 🟢 Pass the originalname to the function
+      const uploadResult = await streamUpload(req.file.buffer, req.file.originalname);
+      attachedReportUrl = uploadResult.secure_url;
+      attachedReportName = req.file.originalname;
+      console.log("✅ Upload successful:", attachedReportUrl);
     }
 
-    const newAppt = new Appointment({
+    const newAppointment = new Appointment({
       patientId,
       doctorId,
-      date, // Saves as "2026-02-02"
+      date,
       timeSlot,
-      meetingLink: `https://meet.google.com/${Math.random().toString(36).substring(7)}`
+      reason,
+      attachedReportUrl,
+      attachedReportName
     });
 
-    await newAppt.save();
-    res.status(201).json({ message: "Success", appointment: newAppt });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Booking Error" });
+    await newAppointment.save();
+    res.status(201).json({ message: "Appointment booked successfully", appointment: newAppointment });
+
+  } catch (error) {
+    console.error("Booking Error:", error);
+    res.status(500).json({ message: "Failed to book appointment" });
   }
 };
 
 // 2. GET BOOKED SLOTS
 const getBookedSlots = async (req, res) => {
   try {
-    const { doctorId, date } = req.query; 
+    const { doctorId, date } = req.query;
 
     // console.log(`🔎 Checking: ${doctorId} on ${date}`);
 
@@ -59,7 +86,7 @@ const getBookedSlots = async (req, res) => {
 const getMyAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ patientId: req.params.userId })
-      .populate({ path: "doctorId", populate: { path: "userId", select: "fullName" }})
+      .populate({ path: "doctorId", populate: { path: "userId", select: "fullName" } })
       .sort({ createdAt: -1 });
 
     res.json(appointments);
@@ -69,21 +96,37 @@ const getMyAppointments = async (req, res) => {
   }
 };
 
-// 4. DOCTOR & 5. ALL DOCTORS (Keep existing logic)
+// 3. GET APPOINTMENTS FOR DOCTOR DASHBOARD
 const getDoctorAppointments = async (req, res) => {
-    try {
-        const doc = await Doctor.findOne({ userId: req.params.doctorId });
-        if(!doc) return res.status(404).json({message: "Doc not found"});
-        const appts = await Appointment.find({ doctorId: doc._id }).populate("patientId", "fullName email");
-        res.json(appts);
-    } catch(e) { res.status(500).json({message: "Error"}); }
+  try {
+    // The frontend is sending the logged-in User's ID in the URL.
+    // We named the parameter ":doctorId" in the route, so it's inside req.params.doctorId
+    const loggedInUserId = req.params.doctorId;
+
+    // Step 1: Find the actual Doctor profile linked to this User account
+    const doctorProfile = await Doctor.findOne({ userId: loggedInUserId });
+
+    if (!doctorProfile) {
+      return res.status(404).json({ message: "Doctor profile not found for this user." });
+    }
+
+    // Step 2: Use the REAL Doctor ID to find the appointments
+    const appointments = await Appointment.find({ doctorId: doctorProfile._id })
+      .populate("patientId", "fullName email") // Get patient details
+      .sort({ date: 1 }); // Sort chronologically
+
+    res.json(appointments);
+  } catch (error) {
+    console.error("Fetch Doctor Appointments Error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
 };
 
 const getAllDoctors = async (req, res) => {
-    try {
-        const docs = await Doctor.find().populate("userId", "fullName email");
-        res.json(docs);
-    } catch(e) { res.status(500).json({message: "Error"}); }
+  try {
+    const docs = await Doctor.find().populate("userId", "fullName email");
+    res.json(docs);
+  } catch (e) { res.status(500).json({ message: "Error" }); }
 };
 
 // CANCEL APPOINTMENT

@@ -3,6 +3,7 @@ import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AuthCard from '../components/AuthCard';
 import PricingSection from '../components/PricingSection';
+import CreativeFooter from '../components/CreativeFooter';
 
 // Helper Icon Component
 const Icon = ({ name, className = "" }) => (
@@ -19,7 +20,7 @@ const LandingPage = () => {
 
   return (
     <div className="font-display text-slate-900 antialiased bg-slate-50 overflow-x-hidden selection:bg-primary/20 selection:text-primary">
-      
+
       {/* --- BACKGROUND ACCENTS --- */}
       <div className="fixed top-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full bg-primary/10 blur-[60px] pointer-events-none z-0"></div>
       <div className="fixed top-[40%] left-[-200px] w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[60px] pointer-events-none z-0"></div>
@@ -49,7 +50,7 @@ const LandingPage = () => {
       <section className="relative w-full pt-12 pb-20 lg:pt-24 lg:pb-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            
+
             {/* Left Content */}
             <div className="flex flex-col gap-6 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit">
@@ -127,11 +128,8 @@ const LandingPage = () => {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-white pt-16 pb-8 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
-          © 2026 MediFlow AI. All rights reserved.
-        </div>
-      </footer>
+      {/* --- FOOTER --- */}
+      <CreativeFooter />
 
     </div>
   );

@@ -32,7 +32,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   // 3. Logout Function
-  const logout = () => {
+  const logout = async () => {
+    // 🟢 Tell the backend the user is leaving
+    if (user && user.id) {
+      try {
+        await fetch("http://localhost:5001/api/auth/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id })
+        });
+      } catch (err) {
+        console.error("Failed to update offline status");
+      }
+    }
+
+    // Clear local data
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);

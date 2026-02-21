@@ -120,7 +120,7 @@ const HealthHiveLanding = () => {
         <div className="relative w-full max-w-5xl mt-16 md:mt-20 aspect-[16/9] group perspective-1000">
           <div 
             className="relative w-full h-full bg-cover bg-center rounded-2xl shadow-2xl transition-transform duration-700 ease-out hover:scale-[1.02]" 
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=2070')" }}
+            style={{ backgroundImage: "url('')" }}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-20"></div>
             

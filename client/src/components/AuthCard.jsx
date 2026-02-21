@@ -6,13 +6,13 @@ import { Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 
 // ✅ UNCOMMENTED & ACTIVE
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../firebase"; 
+import { auth, provider } from "../firebase";
 
 const AuthCard = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -154,7 +154,7 @@ const AuthCard = () => {
               <label className="text-xs font-semibold text-slate-500 uppercase">Full Name</label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-                <input 
+                <input
                   type="text" name="fullName" placeholder="John Doe"
                   className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 outline-none"
                   value={formData.fullName} onChange={handleChange} required
@@ -166,7 +166,7 @@ const AuthCard = () => {
             <label className="text-xs font-semibold text-slate-500 uppercase">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-              <input 
+              <input
                 type="email" name="email" placeholder="you@example.com"
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 outline-none"
                 value={formData.email} onChange={handleChange} required
@@ -177,7 +177,7 @@ const AuthCard = () => {
             <label className="text-xs font-semibold text-slate-500 uppercase">Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-              <input 
+              <input
                 type="password" name="password" placeholder="••••••••"
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 outline-none"
                 value={formData.password} onChange={handleChange} required
@@ -185,7 +185,7 @@ const AuthCard = () => {
             </div>
           </div>
 
-          <button 
+          <button
             type="submit" disabled={loading}
             className="w-full py-3 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
           >
@@ -196,19 +196,19 @@ const AuthCard = () => {
         </form>
 
         <div className="my-6 flex items-center">
-            <div className="flex-1 border-t border-slate-200"></div>
-            <span className="px-3 text-slate-400 text-sm font-medium">OR</span>
-            <div className="flex-1 border-t border-slate-200"></div>
+          <div className="flex-1 border-t border-slate-200"></div>
+          <span className="px-3 text-slate-400 text-sm font-medium">OR</span>
+          <div className="flex-1 border-t border-slate-200"></div>
         </div>
 
         {/* 🟢 REAL GOOGLE BUTTON */}
-        <button 
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2"
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2"
         >
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-5 h-5" alt="Google" />
-            Sign in with Google
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-5 h-5" alt="Google" />
+          Sign in with Google
         </button>
 
         <div className="mt-6 text-center">

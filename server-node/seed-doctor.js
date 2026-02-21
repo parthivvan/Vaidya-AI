@@ -46,7 +46,7 @@ const doctors = [
     specialization: "Orthopedic",
     experience: 7,
     consultationFee: 900,
-    image: "https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=500",
+    image: "https://www.peakpx.com/en/hd-wallpaper-desktop-nbbzx",
     hospital: "Yashoda Hospitals",
     bio: "Specializing in sports medicine and joint replacement."
   },

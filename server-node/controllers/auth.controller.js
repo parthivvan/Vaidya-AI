@@ -70,6 +70,12 @@ const loginUser = async (req, res) => {
       { expiresIn: "1h" }
     );
 
+    // 🟢 Update online status
+    await User.findByIdAndUpdate(user._id, {
+      isOnline: true,
+      lastActiveAt: new Date()
+    });
+
     res.json({
       token,
       message: "Login Successful",
@@ -104,6 +110,12 @@ const googleAuth = async (req, res) => {
         { expiresIn: "1h" }
       );
 
+      // 🟢 Update online status
+      await User.findByIdAndUpdate(user._id, {
+        isOnline: true,
+        lastActiveAt: new Date()
+      });
+
       return res.json({
         token,
         message: "Google Login Successful",
@@ -135,6 +147,12 @@ const googleAuth = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+
+    // 🟢 Update online status
+    await User.findByIdAndUpdate(user._id, {
+      isOnline: true,
+      lastActiveAt: new Date()
+    });
 
     res.status(201).json({
       token,
@@ -200,7 +218,7 @@ const promoteToDoctor = async (req, res) => {
 const demoteToPatient = async (req, res) => {
   try {
     const { email } = req.body;
-    
+
     // 1. Find and Downgrade User
     const user = await User.findOneAndUpdate(
       { email },
@@ -219,6 +237,23 @@ const demoteToPatient = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
   }
+
+};
+
+// ==============================
+// 6. LOGOUT USER
+// ==============================
+const logoutUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (userId) {
+      await User.findByIdAndUpdate(userId, { isOnline: false });
+    }
+    res.json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout Error:", error);
+    res.status(500).json({ message: "Server error during logout" });
+  }
 };
 
 // ==============================
@@ -230,4 +265,5 @@ module.exports = {
   googleAuth,
   promoteToDoctor,
   demoteToPatient,
+  logoutUser,
 };

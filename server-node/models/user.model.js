@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "Unknown",
   },
+  // 🟢 NEW: Track online status
+  isOnline: { type: Boolean, default: false },
+
+  // Optional: Track last seen
+  lastActiveAt: { type: Date, default: Date.now },
   // 👇 NEW: Subscription Logic
   subscription: {
     plan: {
@@ -48,7 +53,7 @@ const userSchema = new mongoose.Schema({
     }
   },
   googlePhotoUrl: {
-    type: String, 
+    type: String,
     default: ""
   }
 }, { timestamps: true });

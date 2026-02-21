@@ -14,6 +14,7 @@ import AdminUpload from './pages/AdminUpload';
 import SuperAdminDashboard from './pages/SuperAdminDashboard';
 import ProductDetails from './pages/ProductDetails';
 import LabTests from './pages/LabTests';
+import XRayScanner from './pages/XRayScanner';
 
 // Context & Protection
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -22,13 +23,13 @@ import { CartProvider } from './context/CartContext';
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  
+
   if (!user) {
     return <Navigate to="/login" />;
   }
-  
+
   return children;
 };
 
@@ -38,45 +39,48 @@ function App() {
       <CartProvider>
         <Toaster position="top-right" />
         <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/health-hive" element={<HealthHiveLanding />} />
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/health-hive" element={<HealthHiveLanding />} />
 
-        {/* Patient Dashboard */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
+          {/* Patient Dashboard */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
 
-        {/* 👨‍⚕️ DOCTOR DASHBOARD (The Route we were missing/breaking) */}
-        <Route path="/doctor-dashboard" element={
-          <ProtectedRoute>
-            <DoctorDashboard />
-          </ProtectedRoute>
-        } />
+          {/* 👨‍⚕️ DOCTOR DASHBOARD (The Route we were missing/breaking) */}
+          <Route path="/doctor-dashboard" element={
+            <ProtectedRoute>
+              <DoctorDashboard />
+            </ProtectedRoute>
+          } />
 
-        {/* Pharmacy */}
-        <Route path="/pharmacy" element={<ProtectedRoute><Pharmacy /></ProtectedRoute>} />
+          {/* Pharmacy */}
+          <Route path="/pharmacy" element={<ProtectedRoute><Pharmacy /></ProtectedRoute>} />
 
-        {/* Product Details */}
-        <Route path="/product/:id" element={<ProtectedRoute><ProductDetails /></ProtectedRoute>} />
+          {/* Product Details */}
+          <Route path="/product/:id" element={<ProtectedRoute><ProductDetails /></ProtectedRoute>} />
 
-        {/* Lab Tests */}
-        <Route path="/lab-tests" element={<LabTests />} />
+          {/* Lab Tests */}
+          <Route path="/lab-tests" element={<LabTests />} />
 
-        {/* Cart */}
-        <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+          {/* 🩻 Vision AI Scanner */}
+          <Route path="/xray" element={<XRayScanner />} />
 
-        {/* Admin Upload */}
-        <Route path="/admin/add" element={<AdminUpload />} />
+          {/* Cart */}
+          <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
 
-        {/* Super Admin Dashboard */}
-        <Route path="/super-admin" element={<SuperAdminDashboard />} />
+          {/* Admin Upload */}
+          <Route path="/admin/add" element={<AdminUpload />} />
 
-        {/* Catch-all: If page doesn't exist, go home */}
-        <Route path="*" element={<Navigate to="/" />} />
+          {/* Super Admin Dashboard */}
+          <Route path="/super-admin" element={<SuperAdminDashboard />} />
+
+          {/* Catch-all: If page doesn't exist, go home */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </CartProvider>
     </AuthProvider>

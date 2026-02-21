@@ -1,15 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const { 
-  bookAppointment, 
-  getMyAppointments, 
+const multer = require('multer');
+
+// 🟢 2. Configure Multer to hold the file in RAM temporarily
+const upload = multer({ storage: multer.memoryStorage() });
+
+const {
+  bookAppointment,
+  getMyAppointments,
   getDoctorAppointments,
   getBookedSlots,
   cancelAppointment
 } = require("../controllers/appointment.controller");
 
-// 1. Book Appointment
-router.post("/book", bookAppointment);
+// 🟢 3. Inject upload.single('labReport') BEFORE bookAppointment!
+// This tells Multer: "Grab the file named 'labReport', put it in req.file, 
+// and put the rest of the text fields into req.body!"
+router.post("/book", upload.single("labReport"), bookAppointment);
 
 // 2. Patient History
 router.get("/patient/:userId", getMyAppointments);

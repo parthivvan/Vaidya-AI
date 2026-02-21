@@ -5,6 +5,7 @@ const Order = require("../models/order.model");
 const Appointment = require("../models/appointment.model");
 const AccessLog = require("../models/accessLog.model");
 const Doctor = require("../models/doctor.model"); // 👈 Import Doctor Model
+const LabAppointment = require("../models/labAppointment.model");
 
 // 1. GET AUDIT LOGS
 router.get("/logs", async (req, res) => {
@@ -29,18 +30,18 @@ router.post("/log-access", async (req, res) => {
     // We try to find the Doctor Profile associated with this User ID
     let finalDoctorId = doctorId;
     const doctorProfile = await Doctor.findOne({ userId: doctorId });
-    
+
     if (doctorProfile) {
-        finalDoctorId = doctorProfile._id; // Use the real Doctor Profile ID
+      finalDoctorId = doctorProfile._id; // Use the real Doctor Profile ID
     }
 
     // Create the log
-    await AccessLog.create({ 
-        doctorId: finalDoctorId, 
-        patientId, // In a real app, ensure this is a valid MongoDB ID
-        details 
+    await AccessLog.create({
+      doctorId: finalDoctorId,
+      patientId, // In a real app, ensure this is a valid MongoDB ID
+      details
     });
-    
+
     res.status(201).json({ message: "Access recorded" });
   } catch (err) {
     console.error("Spy Error:", err);
@@ -69,6 +70,21 @@ router.get("/all-appointments", async (req, res) => {
     res.json(appointments);
   } catch (err) {
     res.status(500).json({ message: "Error fetching appointments" });
+  }
+});
+
+// 5. GET ALL LAB APPOINTMENTS
+router.get("/all-lab-appointments", async (req, res) => {
+  try {
+    const labAppts = await LabAppointment.find()
+      .populate("patientId", "fullName email")
+      // .populate("labAdminId", "name") // If you link to a specific lab tech
+      .sort({ date: -1 });
+
+    res.json(labAppts);
+  } catch (error) {
+    console.error("Fetch Lab Appointments Error:", error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
