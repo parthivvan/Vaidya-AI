@@ -15,8 +15,8 @@ const analyzeImage = async (req, res) => {
         const blob = new Blob([file.buffer], { type: file.mimetype });
         formData.append("file", blob, file.originalname);
 
-        // 2. Call your Python Microservice (Port 8000)
-        const pythonResponse = await fetch("http://localhost:8000/api/vision/analyze", {
+        // 2. Call your Python Microservice (Port 8001)
+        const pythonResponse = await fetch("http://localhost:8001/api/vision/analyze", {
             method: "POST",
             body: formData
         });
