@@ -34,7 +34,7 @@ const LandingPage = () => {
                 <Icon name="medical_services" className="text-[20px]" />
               </div>
               <span className="text-xl font-bold tracking-tight text-slate-900">
-                MediFlow AI
+                Vaidya AI
               </span>
             </div>
             <div className="hidden md:flex items-center gap-8">
@@ -118,7 +118,7 @@ const LandingPage = () => {
       <section className="py-20 bg-white border-t border-slate-100">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <blockquote className="text-2xl md:text-3xl font-medium text-slate-800 mb-8">
-            "MediFlow AI has transformed how we manage patient intake."
+            "Vaidya AI has transformed how we manage patient intake."
           </blockquote>
           <div className="font-bold">Dr. Emily Chen</div>
           <div className="text-slate-500 text-sm">

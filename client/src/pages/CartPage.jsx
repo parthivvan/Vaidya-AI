@@ -166,7 +166,7 @@ const CartPage = () => {
                                                 <p className="text-sm text-gray-500 mt-0.5">{item.category}</p>
                                             </div>
                                         </div>
-                                        <p className="text-[#6354e8] font-bold mt-2">${item.price}</p>
+                                        <p className="text-[#6354e8] font-bold mt-2">₹{item.price}</p>
                                     </div>
                                     <div className="flex items-center gap-6 mt-4 sm:mt-0 w-full sm:w-auto justify-between sm:justify-end">
                                         <div className="flex items-center rounded-lg bg-gray-50 border border-gray-200 p-1">
@@ -209,7 +209,7 @@ const CartPage = () => {
                                 <div className="space-y-4 mb-6">
                                     <div className="flex justify-between text-sm text-gray-600">
                                         <span>Subtotal</span>
-                                        <span className="font-medium">${cartTotal.toFixed(2)}</span>
+                                        <span className="font-medium">₹{cartTotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-gray-600">
                                         <span>Shipping</span>
@@ -217,12 +217,12 @@ const CartPage = () => {
                                     </div>
                                     <div className="flex justify-between text-sm text-gray-600">
                                         <span>Tax (8%)</span>
-                                        <span className="font-medium">${tax.toFixed(2)}</span>
+                                        <span className="font-medium">₹{tax.toFixed(2)}</span>
                                     </div>
                                     <div className="my-4 border-t border-gray-200 border-dashed"></div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-base font-bold text-gray-900">Total</span>
-                                        <span className="text-2xl font-black text-[#6354e8]">${finalTotal.toFixed(2)}</span>
+                                        <span className="text-2xl font-black text-[#6354e8]">₹{finalTotal.toFixed(2)}</span>
                                     </div>
                                 </div>
 

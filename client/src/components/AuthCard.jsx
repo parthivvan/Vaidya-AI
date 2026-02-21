@@ -143,7 +143,7 @@ const AuthCard = () => {
           {isLogin ? "Welcome Back" : "Create Account"}
         </h2>
         <p className="text-slate-500 text-sm mt-2">
-          {isLogin ? "Enter your credentials" : "Join MediFlow AI today"}
+          {isLogin ? "Enter your credentials" : "Join Vaidya AI today"}
         </p>
       </div>
 

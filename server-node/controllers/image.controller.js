@@ -46,6 +46,7 @@ const saveReport = async (req, res) => {
         const { prediction, confidence, notes } = req.body;
 
         const newReport = new ImagingReport({
+            patientId: req.body.patientId || null, // 🟢 FIX: Link to patient if provided
             prediction,
             confidence,
             radiologistNotes: notes || "AI findings verified by attending radiologist."

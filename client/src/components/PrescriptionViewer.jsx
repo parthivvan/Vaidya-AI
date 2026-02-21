@@ -45,7 +45,7 @@ const PrescriptionViewer = ({ isOpen, onClose, appointmentId }) => {
 
                 // Save the matched products to LocalStorage so the Pharmacy page can grab them
                 // (If you use Redux/Context for your cart, you can dispatch it here instead!)
-                const existingCart = JSON.parse(localStorage.getItem('mediflow_cart')) || [];
+                const existingCart = JSON.parse(localStorage.getItem('vaidya_cart')) || [];
 
                 // Add new items (preventing exact duplicates based on ID)
                 const newCart = [...existingCart];
@@ -55,7 +55,7 @@ const PrescriptionViewer = ({ isOpen, onClose, appointmentId }) => {
                     }
                 });
 
-                localStorage.setItem('mediflow_cart', JSON.stringify(newCart));
+                localStorage.setItem('vaidya_cart', JSON.stringify(newCart));
 
                 // 🟢 LEAVE A SECRET NOTE FOR THE PHARMACY PAGE
                 sessionStorage.setItem('autofill_success', 'true');
@@ -83,7 +83,7 @@ const PrescriptionViewer = ({ isOpen, onClose, appointmentId }) => {
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`MediFlow_Rx_${prescription.patientId?.fullName}.pdf`);
+            pdf.save(`Vaidya_Rx_${prescription.patientId?.fullName}.pdf`);
             toast.success("Downloaded!", { id: toastId });
         } catch (e) { toast.error("PDF Failed", { id: toastId }); }
     };
@@ -122,13 +122,13 @@ const PrescriptionViewer = ({ isOpen, onClose, appointmentId }) => {
                             <header className="flex justify-between items-start border-b-2 border-slate-100 pb-6 mb-6">
                                 <div>
                                     <h1 className="text-3xl font-black font-display text-[#100e1b] flex items-center gap-2">
-                                        <Activity className="w-8 h-8 text-[#5747e6]" /> MediFlow AI
+                                        <Activity className="w-8 h-8 text-[#5747e6]" /> Vaidya AI
                                     </h1>
                                     <p className="text-slate-500 text-sm mt-1">NPI: {prescription.verification?.hospitalRegNumber || "HOSP-0000"} | Reg: ISO 9001:2015</p>
                                 </div>
                                 <div className="text-right text-xs text-slate-500">
                                     <p>123 Health Ave, Medical City, NY 10001</p>
-                                    <p>Phone: +1 (800) 555-0199 | www.mediflow.ai</p>
+                                    <p>Phone: +1 (800) 555-0199 | www.vaidya.ai</p>
                                     <p className="font-bold text-slate-800 mt-2">Date: {new Date(prescription.createdAt).toLocaleDateString()}</p>
                                 </div>
                             </header>
@@ -200,7 +200,7 @@ const PrescriptionViewer = ({ isOpen, onClose, appointmentId }) => {
                                 <div className="flex items-center gap-4">
                                     <div className="p-1 border-2 border-slate-200 rounded bg-white">
                                         <QRCodeSVG
-                                            value={`https://mediflow.ai/verify/${prescription.verification?.signatureHash || prescription._id}`}
+                                            value={`https://vaidya.ai/verify/${prescription.verification?.signatureHash || prescription._id}`}
                                             size={64}
                                             level="L"
                                         />
@@ -227,7 +227,7 @@ const PrescriptionViewer = ({ isOpen, onClose, appointmentId }) => {
 
                             {/* Hidden Footer string for SuperAdmin scraping */}
                             <div className="absolute bottom-2 left-10 text-[6px] text-transparent select-all">
-                                {`[MEDIFLOW-META]-${prescription._id}-${prescription.doctorId?._id}-${Date.now()}`}
+                                {`[VAIDYA-META]-${prescription._id}-${prescription.doctorId?._id}-${Date.now()}`}
                             </div>
 
                         </div>

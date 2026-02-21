@@ -26,7 +26,7 @@ const AuthLoader = ({ message = "Verifying Secure Credentials..." }) => {
 
                 {/* Text Details */}
                 <h2 className="text-2xl font-bold text-white font-display mb-2 tracking-tight flex items-center gap-2">
-                    MediFlow <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5747e6] to-purple-400">AI</span>
+                    Vaidya <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5747e6] to-purple-400">AI</span>
                 </h2>
 
                 <div className="flex items-center gap-3 text-gray-400 text-sm font-medium">

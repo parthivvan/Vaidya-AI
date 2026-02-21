@@ -10,7 +10,7 @@ const Navbar = () => {
             <Activity className="h-6 w-6 text-white" />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-            MediFlow AI
+            Vaidya AI
           </span>
         </div>
         <div className="hidden md:flex items-center space-x-6">

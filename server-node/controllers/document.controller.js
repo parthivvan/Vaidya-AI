@@ -24,12 +24,27 @@ const uploadAndAnalyzePDF = async (req, res) => {
         // 3. Generate the Summary based on those metrics
         const summary = generateSummary(analysisResults);
 
+        // 🟢 FIX: Save the lab report to the database
+        const LabReport = require("../models/labReport.model");
+        const newReport = new LabReport({
+            patientId: req.body.patientId || null, // Optional, if provided
+            testType: "General Checkup", // Or infer from analysisResults
+            rawValues: {}, // Could map analysisResults here
+            aiSummary: summary.paragraph,
+            status: "completed"
+        });
+        // Only save if patientId is provided
+        if (req.body.patientId) {
+            await newReport.save();
+        }
+
         // 4. Bundle them together in a new payload structure
         res.status(200).json({
             message: "PDF Analyzed Successfully",
             data: {
                 panels: analysisResults,
-                summary: summary
+                summary: summary,
+                reportId: req.body.patientId ? newReport._id : null
             }
         });
 

@@ -110,7 +110,7 @@ const SuperAdminDashboard = () => {
                <div className="flex items-center gap-3 mb-8">
                   <div className="w-10 h-10 rounded-xl bg-[#5747e6]/10 flex items-center justify-center text-[#5747e6]"><Shield className="w-6 h-6" /></div>
                   <div>
-                     <h1 className="text-lg font-bold font-display leading-tight">MediFlow AI</h1>
+                     <h1 className="text-lg font-bold font-display leading-tight">Vaidya AI</h1>
                      <div className="flex items-center gap-1.5 mt-1 bg-red-50 w-fit px-2 py-0.5 rounded-full border border-red-100">
                         <span className="relative flex h-2 w-2">
                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>

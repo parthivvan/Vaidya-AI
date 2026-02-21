@@ -6,7 +6,7 @@ export const CartProvider = ({ children }) => {
   // 1. INITIALIZE FROM LOCAL STORAGE
   const [cart, setCart] = useState(() => {
     try {
-      const savedCart = localStorage.getItem('mediflow_cart');
+      const savedCart = localStorage.getItem('vaidya_cart');
       return savedCart ? JSON.parse(savedCart) : [];
     } catch (error) {
       return [];
@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
 
   // 2. AUTO-SAVE
   useEffect(() => {
-    localStorage.setItem('mediflow_cart', JSON.stringify(cart));
+    localStorage.setItem('vaidya_cart', JSON.stringify(cart));
   }, [cart]);
 
   // Add Item
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem('mediflow_cart');
+    localStorage.removeItem('vaidya_cart');
   };
 
   // 🟢 Make sure to export `updateQuantity` here!

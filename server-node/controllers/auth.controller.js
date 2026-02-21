@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "7d" } // 🟢 FIX: Increased token expiry from 1h to 7d for better UX
     );
 
     res.status(201).json({
@@ -67,7 +67,7 @@ const loginUser = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "7d" } // 🟢 FIX: Increased token expiry from 1h to 7d for better UX
     );
 
     // 🟢 Update online status
@@ -107,7 +107,7 @@ const googleAuth = async (req, res) => {
       const token = jwt.sign(
         { userId: user._id },
         process.env.JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "7d" } // 🟢 FIX: Increased token expiry from 1h to 7d for better UX
       );
 
       // 🟢 Update online status
@@ -145,7 +145,7 @@ const googleAuth = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "7d" } // 🟢 FIX: Increased token expiry from 1h to 7d for better UX
     );
 
     // 🟢 Update online status

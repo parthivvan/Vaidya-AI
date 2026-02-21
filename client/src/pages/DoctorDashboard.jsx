@@ -88,7 +88,7 @@ const DoctorDashboard = () => {
                     <div className="w-10 h-10 bg-[#5747e6]/10 rounded-xl flex items-center justify-center text-[#5747e6]">
                         <Activity className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-bold tracking-tight font-display">MediFlow AI</h2>
+                    <h2 className="text-xl font-bold tracking-tight font-display">Vaidya AI</h2>
                 </div>
 
                 <nav className="flex flex-col gap-2 font-display">

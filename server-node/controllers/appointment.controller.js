@@ -49,7 +49,8 @@ const bookAppointment = async (req, res) => {
       timeSlot,
       reason,
       attachedReportUrl,
-      attachedReportName
+      attachedReportName,
+      meetingLink: `https://meet.jit.si/mediflow-${Math.random().toString(36).substring(7)}` // 🟢 FIX: Generate a unique meeting link
     });
 
     await newAppointment.save();
@@ -87,7 +88,7 @@ const getMyAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ patientId: req.params.userId })
       .populate({ path: "doctorId", populate: { path: "userId", select: "fullName" } })
-      .sort({ createdAt: -1 });
+      .sort({ date: -1 }); // 🟢 FIX: Sort by date instead of createdAt for better UX
 
     res.json(appointments);
   } catch (err) {

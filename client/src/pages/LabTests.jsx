@@ -19,8 +19,8 @@ const LabTests = () => {
     const [loading, setLoading] = useState(true);
 
     // Location & Filters
-    const [location, setLocation] = useState(localStorage.getItem('mediFlow_location') || '');
-    const [showLocationModal, setShowLocationModal] = useState(!localStorage.getItem('mediFlow_location'));
+    const [location, setLocation] = useState(localStorage.getItem('vaidya_location') || '');
+    const [showLocationModal, setShowLocationModal] = useState(!localStorage.getItem('vaidya_location'));
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('all');
 
@@ -81,7 +81,7 @@ const LabTests = () => {
 
                     // Save
                     setLocation(detectedLoc);
-                    localStorage.setItem('mediFlow_location', detectedLoc);
+                    localStorage.setItem('vaidya_location', detectedLoc);
                     setShowLocationModal(false);
                     saveLocationToBackend(detectedLoc); // 👈 SYNC TO DB
 
@@ -335,7 +335,7 @@ const LabTests = () => {
                         {/* Footer */}
                         <div className="p-4 border-t border-slate-100 bg-white text-center">
                             <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest flex items-center justify-center gap-1">
-                                <CheckCircle className="w-3 h-3 text-[#5747e6]" /> Verified via MediFlow Multi-Panel Orchestrator
+                                <CheckCircle className="w-3 h-3 text-[#5747e6]" /> Verified via Vaidya Multi-Panel Orchestrator
                             </p>
                         </div>
                     </div>
@@ -348,7 +348,7 @@ const LabTests = () => {
                     <div className="w-10 h-10 bg-[#5747e6]/10 rounded-xl flex items-center justify-center text-[#5747e6]">
                         <Microscope className="w-6 h-6" />
                     </div>
-                    <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">MediFlow Diagnostics</h1>
+                    <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">Vaidya Diagnostics</h1>
                 </div>
                 <div className="flex items-center gap-4">
                     <button onClick={() => setShowLocationModal(true)} className="hidden md:flex items-center gap-2 text-sm font-bold text-[#5747e6] bg-[#5747e6]/5 px-4 py-2 rounded-full">

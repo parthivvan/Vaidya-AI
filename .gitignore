@@ -71,7 +71,11 @@ logs/
 *.log.*
 
 # ─── ML Model / Large Binary Files ───────────────────────────────────────────
-# *.pth   ← keep the trained model in the repo (comment out if you don't want it)
+*.pth
+*.pt
+*.onnx
+*.pkl
+*.h5
 
 # ─── Dataset (large) ──────────────────────────────────────────────────────────
 ai-service/dataset/

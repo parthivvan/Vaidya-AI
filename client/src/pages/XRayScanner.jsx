@@ -64,7 +64,7 @@ const XRayScanner = ({ patient }) => {
     const finalizeReport = async () => {
         if (!aiResult) return;
         setIsSaving(true);
-        const toastId = toast.loading("Saving securely to MediFlow Database...");
+        const toastId = toast.loading("Saving securely to Vaidya Database...");
 
         try {
             const res = await fetch("http://localhost:5001/api/vision/save", {
@@ -175,7 +175,7 @@ const XRayScanner = ({ patient }) => {
                         <div className="flex items-start justify-between">
                             <div>
                                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight font-display">AI Findings</h2>
-                                <p className="text-slate-500 text-sm mt-1 font-medium">MediFlow Vision Core</p>
+                                <p className="text-slate-500 text-sm mt-1 font-medium">Vaidya Vision Core</p>
                             </div>
                             {aiResult && (
                                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold border ${isNormal ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'}`}>

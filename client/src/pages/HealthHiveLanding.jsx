@@ -315,10 +315,10 @@ const HealthHiveLanding = () => {
         
         <div className="flex overflow-x-auto gap-8 pb-10 hide-scrollbar px-6 lg:px-[max(0px,calc(50vw-40rem))]">
           {[
-            { name: "Advanced Sanitizer", cat: "Hygiene", price: "$12.00", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=400" },
-            { name: "Pure Zinc Complex", cat: "Supplements", price: "$24.50", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400" },
-            { name: "Smart BP Monitor", cat: "Devices", price: "$89.00", img: "https://images.unsplash.com/photo-1576091160550-2187d80aeff2?auto=format&fit=crop&q=80&w=400" },
-            { name: "Infrared Thermometer", cat: "Devices", price: "$45.00", img: "https://images.unsplash.com/photo-1585776245991-cf89dd7fc55a?auto=format&fit=crop&q=80&w=400" }
+            { name: "Advanced Sanitizer", cat: "Hygiene", price: "₹12.00", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=400" },
+            { name: "Pure Zinc Complex", cat: "Supplements", price: "₹24.50", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400" },
+            { name: "Smart BP Monitor", cat: "Devices", price: "₹89.00", img: "https://images.unsplash.com/photo-1576091160550-2187d80aeff2?auto=format&fit=crop&q=80&w=400" },
+            { name: "Infrared Thermometer", cat: "Devices", price: "₹45.00", img: "https://images.unsplash.com/photo-1585776245991-cf89dd7fc55a?auto=format&fit=crop&q=80&w=400" }
           ].map((prod, i) => (
              <div key={i} className="min-w-[300px] md:min-w-[380px] group cursor-pointer" onClick={() => navigate('/pharmacy')}>
                 <div className="aspect-[4/5] bg-slate-50 rounded-3xl relative overflow-hidden flex items-center justify-center mb-4">

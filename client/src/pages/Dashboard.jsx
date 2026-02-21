@@ -108,7 +108,7 @@ const Dashboard = () => {
           <div className="size-10 rounded-xl bg-[#5747e6] flex items-center justify-center text-white shadow-lg shadow-[#5747e6]/30">
             <Activity className="w-6 h-6" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight font-display">MediFlow AI</h1>
+          <h1 className="text-xl font-bold tracking-tight font-display">Vaidya AI</h1>
         </div>
 
         <nav className="flex flex-col gap-2 flex-1 font-display">
@@ -173,28 +173,15 @@ const Dashboard = () => {
           <section className="flex flex-col gap-6">
             <header className="flex flex-wrap justify-between items-end gap-4">
               <div className="flex flex-col gap-1">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-display">Good morning, {user?.fullName?.split(' ')[0]}</h2>
-                <p className="text-slate-500 text-lg">Here is your health summary.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-display">Hello, {user?.fullName?.split(' ')[0]}</h2>
+                <p className="text-slate-500 text-lg">Welcome back! Here's your dashboard.</p>
               </div>
               <button className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
                 <Download className="w-4 h-4" /> Download Report
               </button>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-rose-500"><Heart className="w-5 h-5" /><span className="text-sm font-bold text-slate-500 uppercase tracking-wide">Heart Rate</span></div>
-                <div className="flex items-end gap-2"><span className="text-4xl font-bold font-display text-slate-800">72</span><span className="text-sm text-slate-500 mb-1 font-medium">bpm</span></div>
-              </div>
-              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-blue-500"><Activity className="w-5 h-5" /><span className="text-sm font-bold text-slate-500 uppercase tracking-wide">Blood Pressure</span></div>
-                <div className="flex items-end gap-2"><span className="text-4xl font-bold font-display text-slate-800">120/80</span><span className="text-sm text-slate-500 mb-1 font-medium">mmHg</span></div>
-              </div>
-              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-indigo-500"><Scale className="w-5 h-5" /><span className="text-sm font-bold text-slate-500 uppercase tracking-wide">Weight</span></div>
-                <div className="flex items-end gap-2"><span className="text-4xl font-bold font-display text-slate-800">68</span><span className="text-sm text-slate-500 mb-1 font-medium">kg</span></div>
-              </div>
-            </div>
+
           </section>
 
           {/* 2. OUR NEW DOCTOR COMPONENT (Handles Booking) */}
@@ -231,7 +218,7 @@ const Dashboard = () => {
                       <div className="flex items-center gap-2 text-slate-500 text-sm font-medium mb-1 bg-slate-50 w-fit px-2 py-1 rounded-md">
                         <Clock className="w-4 h-4" /> {appt.timeSlot} • Video Consultation
                       </div>
-                      <h4 className="text-lg font-bold text-slate-900 font-display">Dr. {appt.doctorId?.userId?.fullName || "Doctor"}</h4>
+                      <h4 className="text-lg font-bold text-slate-900 font-display"> {appt.doctorId?.userId?.fullName || "Doctor"}</h4>
                       <p className="text-slate-500 text-sm">{appt.doctorId?.specialization || "General"}</p>
 
                       {/* 🟢 UPDATED: Clickable link to open the PDF */}
@@ -294,7 +281,7 @@ const Dashboard = () => {
                           <Calendar className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="font-bold text-slate-900">Dr. {appt.doctorId?.name || appt.doctorId?.userId?.fullName || "Doctor"}</h4>
+                          <h4 className="font-bold text-slate-900">{appt.doctorId?.name || appt.doctorId?.userId?.fullName || "Doctor"}</h4>
                           <p className="text-xs text-slate-500 font-medium">{appt.date} • {appt.timeSlot}</p>
                         </div>
                       </div>
@@ -368,7 +355,7 @@ const Dashboard = () => {
           />
 
           <footer className="mt-8 py-6 text-center text-slate-400 text-sm border-t border-slate-200">
-            © 2026 MediFlow AI Inc. All rights reserved.
+            © 2026 Vaidya AI Inc. All rights reserved.
           </footer>
         </div>
       </main>

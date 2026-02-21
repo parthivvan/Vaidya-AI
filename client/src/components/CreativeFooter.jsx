@@ -46,7 +46,7 @@ const CreativeFooter = () => {
                     className="relative z-10 text-center mb-20 max-w-3xl mx-auto"
                 >
                     <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-bold uppercase tracking-widest">
-                        The Minds Behind MediFlow
+                        The Minds Behind Vaidya
                     </div>
                     <h2 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight leading-tight font-display">
                         Architects of <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">Intelligent Care</span>
@@ -69,13 +69,13 @@ const CreativeFooter = () => {
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative mb-6 transform transition-transform duration-300 group-hover:scale-105">
                             <div className="w-32 h-32 rounded-full p-1 bg-white shadow-sm ring-1 ring-indigo-50">
-                                <img alt="Mahesh Parimalla" className="w-full h-full rounded-full object-cover" src="https://ui-avatars.com/api/?name=Mahesh+Parimalla&background=e0e7ff&color=4f46e5&size=128" />
+                                <img alt="Janapati Prabhu Dayal" className="w-full h-full rounded-full object-cover" src="https://ui-avatars.com/api/?name=Mahesh+Parimalla&background=e0e7ff&color=4f46e5&size=128" />
                             </div>
                             <div className="absolute bottom-1 right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-indigo-600">
                                 <Layers className="w-4 h-4" />
                             </div>
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Mahesh Parimalla</h3>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Janapati Prabhu Dayal</h3>
                         <span className="text-sm font-medium text-indigo-400 uppercase tracking-wider mb-4">Front End Developer</span>
                         <p className="text-slate-600 text-sm leading-relaxed mb-6 opacity-80">Architecting immersive user experiences with cutting-edge React patterns and pixel-perfect design.</p>
                         <div className="mt-auto flex space-x-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
@@ -111,13 +111,13 @@ const CreativeFooter = () => {
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative mb-6 transform transition-transform duration-300 group-hover:scale-105">
                             <div className="w-32 h-32 rounded-full p-1 bg-white shadow-sm ring-1 ring-indigo-50">
-                                <img alt="Ram Charan" className="w-full h-full rounded-full object-cover" src="https://ui-avatars.com/api/?name=Ram+Charan&background=e0e7ff&color=4f46e5&size=128" />
+                                <img alt="Vuthuluri Amareshwar" className="w-full h-full rounded-full object-cover" src="https://ui-avatars.com/api/?name=Vuthuluri+Amareshwar&background=e0e7ff&color=4f46e5&size=128" />
                             </div>
                             <div className="absolute bottom-1 right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-indigo-600">
                                 <Code2 className="w-4 h-4" />
                             </div>
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Ram Charan</h3>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Vuthuluri Amareshwar</h3>
                         <span className="text-sm font-medium text-indigo-400 uppercase tracking-wider mb-4">Backend Developer</span>
                         <p className="text-slate-600 text-sm leading-relaxed mb-6 opacity-80">Architecting robust, scalable server infrastructure and secure API ecosystems.</p>
                         <div className="mt-auto flex space-x-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
@@ -131,13 +131,13 @@ const CreativeFooter = () => {
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative mb-6 transform transition-transform duration-300 group-hover:scale-105">
                             <div className="w-32 h-32 rounded-full p-1 bg-white shadow-sm ring-1 ring-indigo-50">
-                                <img alt="Lakshmi Putra" className="w-full h-full rounded-full object-cover" src="https://ui-avatars.com/api/?name=Lakshmi+Putra&background=e0e7ff&color=4f46e5&size=128" />
+                                <img alt="Vanapalli Venkata Parthiv" className="w-full h-full rounded-full object-cover" src="https://ui-avatars.com/api/?name=Vanapalli+Venkata+Parthiv&background=e0e7ff&color=4f46e5&size=128" />
                             </div>
                             <div className="absolute bottom-1 right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-indigo-600">
                                 <ShieldCheck className="w-4 h-4" />
                             </div>
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Lakshmi Putra</h3>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Vanapalli Venkata Parthiv</h3>
                         <span className="text-sm font-medium text-indigo-400 uppercase tracking-wider mb-4">QA & DevOps Lead</span>
                         <p className="text-slate-600 text-sm leading-relaxed mb-6 opacity-80">Ensuring product excellence through rigorous testing, detailed documentation, and source control mastery.</p>
                         <div className="mt-auto flex space-x-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
@@ -173,7 +173,7 @@ const CreativeFooter = () => {
                         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-lg shadow-indigo-200">
                             <Droplets className="text-white w-5 h-5" />
                         </div>
-                        <span className="text-lg font-bold text-slate-900 tracking-tight">MediFlow AI</span>
+                        <span className="text-lg font-bold text-slate-900 tracking-tight">Vaidya AI</span>
                     </div>
                     <div className="flex space-x-8 text-sm text-slate-600 font-medium">
                         <a className="hover:text-indigo-600 transition-colors" href="#">Privacy</a>
@@ -181,7 +181,7 @@ const CreativeFooter = () => {
                         <a className="hover:text-indigo-600 transition-colors" href="#">Support</a>
                     </div>
                     <div className="mt-4 md:mt-0 text-xs text-slate-400 font-medium">
-                        © {new Date().getFullYear()} MediFlow AI Inc.
+                        © {new Date().getFullYear()} Vaidya AI Inc.
                     </div>
                 </div>
             </footer>

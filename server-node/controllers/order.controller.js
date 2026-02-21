@@ -6,6 +6,11 @@ const createOrder = async (req, res) => {
   try {
     const { patientId, items, totalAmount } = req.body;
 
+    // 🟢 FIX: Validate input
+    if (!patientId || !items || items.length === 0 || !totalAmount) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
     // (Optional) Verify stock here before confirming...
 
     const newOrder = new Order({
