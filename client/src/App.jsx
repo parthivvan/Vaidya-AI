@@ -15,6 +15,7 @@ import SuperAdminDashboard from './pages/SuperAdminDashboard';
 import ProductDetails from './pages/ProductDetails';
 import LabTests from './pages/LabTests';
 import XRayScanner from './pages/XRayScanner';
+import MedicalAssistant from './pages/MedicalAssistant';
 
 // Context & Protection
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -69,6 +70,9 @@ function App() {
 
           {/* 🩻 Vision AI Scanner */}
           <Route path="/xray" element={<XRayScanner />} />
+
+          {/* 🤖 Medical AI Assistant */}
+          <Route path="/medical-assistant" element={<MedicalAssistant />} />
 
           {/* Cart */}
           <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />

@@ -124,6 +124,10 @@ const Dashboard = () => {
             <Activity className="w-5 h-5" />
             <span className="font-medium">Smart Diagnostics</span>
           </a>
+          <a href="/medical-assistant" className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-[#5747e6] transition-colors">
+            <FileText className="w-5 h-5" />
+            <span className="font-medium">AI Report Analysis</span>
+          </a>
           <a href="/pharmacy" className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-[#5747e6] transition-colors">
             <Pill className="w-5 h-5" />
             <span className="font-medium">Pharmacy</span>
